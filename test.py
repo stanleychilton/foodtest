@@ -1,7 +1,4 @@
-import math
-import pygame
-import random
-import time
+import math, pygame, random
 
 pygame.init()
 
@@ -13,19 +10,19 @@ colour_list = []
 
 screen_size = (500, 500)
 
-x = screen_size[0]//2
-y = screen_size[1]//2
+x = screen_size[0]//2.5
+y = screen_size[1]//2.5
 
-
-val = 100
-total = 1
+ball_size = 25
+pos = (x,y)
+seg_size = 200
 
 running = True
 
 clock = pygame.time.Clock()
 fps = 120
 
-user_choice = int(input(">>"))
+user_choice = 5 #int(input(">>"))
 
 while len(colour_list) != user_choice:
     cur_colour = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
@@ -34,7 +31,7 @@ while len(colour_list) != user_choice:
 
 
 screen = pygame.display.set_mode(screen_size)
-pygame.display.set_caption("Gravity")
+pygame.display.set_caption("food-test")
 screen.fill(white)
 
 def fill_arc(center, radius, theta0, theta1, color, ndiv=50):
@@ -56,18 +53,27 @@ temp = 0
 
 for i in range(user_choice):
     print(colour_list[i])
-    fill_arc((x, y), 200, temp, seg_angle+temp, colour_list[i])
+    fill_arc((x, y), seg_size, temp, seg_angle+temp, colour_list[i])
     temp += seg_angle
+pygame.draw.circle(screen, white, pos, ball_size)
+
+pygame.mouse.set_pos(pos)
 
 while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
 
+    movement = pygame.mouse.get_pos()
+    movement = (movement[0]-x, movement[1]-y)
 
+    if((-seg_size, -seg_size) < movement < (seg_size, seg_size)):
+        print(movement)
 
 
 
 
 
     pygame.display.flip()
-    time.sleep(3)
     clock.tick(fps)
